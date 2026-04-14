@@ -1,0 +1,206 @@
+CURSOR PROMPT — Ben Inglee Travel Writing Portfolio
+====================================================
+
+Build a complete, fully functional personal portfolio website for a travel writing course final project. The site belongs to Ben Inglee, a music producer and audio engineer from Albany, New York, currently based in Philadelphia. He releases music under the name b2nny. The site will be hosted at beninglee.com.
+
+All content already exists in the folder you have access to (C:\Users\benja\Desktop\Final Project). Read the files listed below to extract the actual text for each page. Do not make up or summarize content — use the real text from the documents.
+
+---
+
+TECH STACK
+----------
+- Use Next.js with the App Router
+- Tailwind CSS for styling
+- No external UI libraries needed
+- Keep dependencies minimal
+- The site should be fully static-export compatible (next export)
+- Use next/font for typography
+
+---
+
+DESIGN DIRECTION
+----------------
+- Clean, minimal, editorial — think a well-designed literary magazine or personal journal, not a corporate portfolio
+- Color palette: off-white or light cream background, near-black text, one subtle accent color (a muted warm tone like dusty amber or slate blue — choose whichever feels right for the content)
+- Typography: a readable serif for body text (like Playfair Display or Lora via Google Fonts), a clean sans-serif for navigation and labels (like Inter or DM Sans)
+- Generous whitespace and line-height — this is a reading site, readability is the top priority
+- Subtle hover states, no animations that distract from the writing
+- Fully responsive — mobile first
+- No hero images or stock photos — the writing is the visual focus
+- Each page should feel like opening a well-formatted piece of writing, not a slideshow
+
+---
+
+SITE STRUCTURE
+--------------
+Five pages total:
+
+1. Landing / Home page (route: /)
+2. Home essay page (route: /home)
+3. Destination essay page (route: /destination)
+4. Guide essay page (route: /guide)
+5. About page (route: /about)
+
+Navigation bar should appear on every page with links: Home | Destination | Guide | About
+The nav should be minimal — just the site name "Ben Inglee" on the left and the page links on the right.
+
+---
+
+PAGE 1 — LANDING PAGE (/)
+--------------------------
+This is the entry point to the site. It should feel like a cover page.
+
+Include:
+- Site title: "Ben Inglee"
+- Subtitle or tagline: "Travel Writing Portfolio"
+- A short intro (2-3 sentences, write these yourself based on the content): something that introduces the three-part arc of the portfolio — Albany as home, Philadelphia as destination, and Philadelphia as a place he now knows from the inside
+- Three card or section links leading to /home, /destination, and /guide
+- Each card should include the essay title, a one-line description, and a "Read" link
+
+Card content:
+  - Home: "Home" — A personal essay about growing up in Albany, NY
+  - Destination: "Destination" — A narrative about arriving in Philadelphia for the first time
+  - Guide: "A Day in Philadelphia" — A time-of-day guide to experiencing the city
+
+---
+
+PAGE 2 — HOME (/home)
+----------------------
+This page displays two pieces side by side (or stacked on mobile): the main essay and the transformation.
+
+Read and display the full text from:
+- MAIN ESSAY: C:\Users\benja\Desktop\Final Project\Home\Revised - HOME Ben Inglee (1).docx
+- TRANSFORMATION: C:\Users\benja\Desktop\Final Project\Transformations\home transformation.docx
+
+Layout:
+- Page heading: "Home"
+- Subheading or label above the essay: "Essay"
+- Essay title displayed: "Home"
+- Full essay text displayed in a readable column (max-width around 680px, centered)
+- Below the essay (or in a sidebar on desktop), display the transformation piece
+- Label it clearly as: "Sidebar — 7 Things That Make Albany Feel Like Home"
+- Style the transformation slightly differently to make it visually distinct from the main essay (slightly different background shade, or a left border accent, or a different font weight for the list items)
+- The numbered list items in the transformation should render as actual numbered list items with the bold heading followed by the paragraph
+
+---
+
+PAGE 3 — DESTINATION (/destination)
+-------------------------------------
+Same layout pattern as the Home page.
+
+Read and display the full text from:
+- MAIN ESSAY: C:\Users\benja\Desktop\Final Project\Destination\Destination_Revised_BenInglee.pdf — extract the text from this PDF
+- TRANSFORMATION: C:\Users\benja\Desktop\Final Project\Transformations\destination transformation.docx
+
+Layout:
+- Page heading: "Destination"
+- Label above essay: "Essay"
+- Essay title: "Destination"
+- Full essay text in readable column
+- Transformation sidebar/section labeled: "Sidebar — What I Wish I Knew Before Moving to Philadelphia"
+- Same visual treatment as the Home transformation sidebar
+- The numbered list items render as actual numbered list items with bold headings
+
+---
+
+PAGE 4 — GUIDE (/guide)
+------------------------
+Same layout pattern, but the transformation is specifically designed as sidebar content that sits alongside the main essay, so on desktop this should ideally be a two-column layout with the essay on the left (wider column) and the roundup list on the right (narrower column). On mobile they stack.
+
+Read and display the full text from:
+- MAIN ESSAY: C:\Users\benja\Desktop\Final Project\Guide\Guide_Revised_BenInglee.docx
+- TRANSFORMATION: C:\Users\benja\Desktop\Final Project\Transformations\guide transformation.docx
+
+Layout:
+- Page heading: "Guide"
+- Label above essay: "A Day in Philadelphia"
+- On desktop: two columns — essay left (~65% width), transformation right (~35% width)
+- Transformation column heading: "10 Spots Worth Stopping at in Philadelphia"
+- Style the right column with a subtle background or border to make it feel like a true editorial sidebar
+- On mobile: essay first, transformation below
+- The numbered list items in the transformation render as numbered list items with bold spot names
+
+---
+
+PAGE 5 — ABOUT (/about)
+------------------------
+Read and display the author bio from:
+- C:\Users\benja\Desktop\Final Project\authors bio.docx
+
+Layout:
+- Page heading: "About"
+- Display the two paragraphs of the bio in a clean centered column
+- Below the bio, add a simple line: "Music: b2nny" (this can link to his Spotify or just be a plain label)
+- Keep this page minimal — just the writing, no photo needed
+
+---
+
+READING THE DOCX FILES
+-----------------------
+Use the mammoth npm package to extract text from .docx files at build time (or in a server component). This preserves the paragraph structure cleanly.
+
+Install: npm install mammoth
+
+For each .docx file, read it in a Next.js server component or generateStaticParams function, extract the text using mammoth.extractRawText(), then parse the paragraphs and render them.
+
+For the PDF files in the Destination folder, use pdf-parse to extract the text:
+Install: npm install pdf-parse
+
+Render all body text as proper <p> tags. Detect numbered list items (lines starting with a number followed by a period) and render them as <ol> with <li> elements. Detect bold headings within list items by checking if the item heading is on its own line before the paragraph.
+
+---
+
+TYPOGRAPHY AND READING EXPERIENCE
+----------------------------------
+- Body text: 18-19px, line-height 1.75, max-width 680px
+- Essay titles: large, serif, prominent
+- Section labels (Essay, Sidebar): small caps or uppercase, letter-spaced, muted color — these are labels not headings
+- Transformation list item numbers: styled clearly, bold
+- Transformation list item headings (the bold titles for each numbered point): render in bold, slightly larger than body
+- Paragraph spacing: generous — 1.2-1.5em between paragraphs
+- On the Guide page, the sidebar column should have slightly smaller body text (16px) to distinguish it from the main essay
+
+---
+
+NAVIGATION BEHAVIOR
+-------------------
+- Active page link should be visually indicated (slightly bolder or underlined)
+- Nav should be sticky on scroll
+- On mobile, the nav links can compress or stack under the site name
+
+---
+
+FOOTER
+------
+Simple footer on every page:
+- "Ben Inglee — Travel Writing Portfolio"
+- Current year
+- Keep it minimal, small text, muted color
+
+---
+
+FOLDER STRUCTURE TO CREATE
+---------------------------
+/app
+  /page.tsx              (landing)
+  /home/page.tsx
+  /destination/page.tsx
+  /guide/page.tsx
+  /about/page.tsx
+  /layout.tsx            (nav + footer wrapper)
+/lib
+  /content.ts            (helper functions for reading docx and pdf files)
+/styles
+  /globals.css
+/public
+  (no images needed)
+
+---
+
+FINAL NOTES
+-----------
+- The audience is college-age young adults navigating new cities. The site should feel personal and readable, not academic.
+- Do not add any content that is not in the source files. Let the writing speak for itself.
+- The three essays form a clear arc: Albany (where I came from) -> arriving in Philadelphia (the transition) -> knowing Philadelphia (belonging). The site design and layout should support that arc without spelling it out explicitly.
+- Keep the code clean and commented. This site may be edited later.
+- When complete, confirm which files were created and give instructions for running the dev server and exporting for static hosting.
