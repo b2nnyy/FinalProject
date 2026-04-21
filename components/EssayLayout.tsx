@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import SourcesLink from "./SourcesLink";
 
 interface Props {
   pageHeading: string;
@@ -6,6 +7,7 @@ interface Props {
   essayTitle: string;
   paragraphs: string[];
   sidebar?: ReactNode;
+  sourcesAnchor?: string;
 }
 
 export default function EssayLayout({
@@ -14,6 +16,7 @@ export default function EssayLayout({
   essayTitle,
   paragraphs,
   sidebar,
+  sourcesAnchor,
 }: Props) {
   return (
     <article className="px-6 sm:px-8 pt-16 pb-8 md:pt-24 md:pb-12">
@@ -57,6 +60,13 @@ export default function EssayLayout({
         <div className="mx-auto max-w-essay mt-18 md:mt-22">
           <hr className="decorative-rule mb-12" />
           {sidebar}
+        </div>
+      )}
+
+      {/* Sources link */}
+      {sourcesAnchor && (
+        <div className="mx-auto max-w-essay mt-16 md:mt-20">
+          <SourcesLink anchor={sourcesAnchor} />
         </div>
       )}
     </article>

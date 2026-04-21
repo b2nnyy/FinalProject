@@ -98,6 +98,39 @@ export async function readPdf(
   return paragraphs;
 }
 
+/**
+ * Read a sources/bibliography file (.docx or .pdf) and return a flat list of
+ * paragraph strings suitable for rendering on the Sources page.
+ * URL auto-linking is handled at render time.
+ */
+export async function readSourcesList(
+  relativePath: string
+): Promise<string[]> {
+  const ext = path.extname(relativePath).toLowerCase();
+  let paragraphs: string[];
+
+  if (ext === ".pdf") {
+    paragraphs = await readPdf(relativePath, false);
+  } else {
+    paragraphs = await readDocx(relativePath, false);
+  }
+
+  // Drop obvious header metadata (name, course code, "SOURCES LIST", dates).
+  const skipPatterns = [
+    /^ben\s*inglee$/i,
+    /^msp\s*3296/i,
+    /^travel\s*writing$/i,
+    /^sources\s*list$/i,
+    /^sources:?$/i,
+    /^final\s+reflection:?\s*sources$/i,
+    /^\w+\s+\d{1,2},?\s+\d{4}$/,
+  ];
+
+  return paragraphs.filter(
+    (p) => !skipPatterns.some((rx) => rx.test(p.trim()))
+  );
+}
+
 export interface TransformationItem {
   number: number;
   heading: string;

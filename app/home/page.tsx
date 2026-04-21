@@ -23,6 +23,7 @@ export default async function HomePage() {
           items={items}
         />
       }
+      sourcesAnchor="home"
     />
   );
 }

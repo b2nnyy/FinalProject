@@ -1,5 +1,6 @@
 import { readDocx, readTransformation } from "@/lib/content";
 import TransformationSidebar from "@/components/TransformationSidebar";
+import SourcesLink from "@/components/SourcesLink";
 
 export default async function GuidePage() {
   const paragraphs = await readDocx("Guide/Guide_Revised_BenInglee.docx", true);
@@ -55,6 +56,11 @@ export default async function GuidePage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Sources link */}
+        <div className="mt-16 md:mt-20 max-w-essay">
+          <SourcesLink anchor="guide" />
         </div>
       </div>
     </article>
