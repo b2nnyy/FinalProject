@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { readDocx } from "@/lib/content";
+import aboutPhoto from "@/public/about.jpg";
 
 export default async function AboutPage() {
   const paragraphs = await readDocx("authors bio.docx", true);
@@ -23,7 +24,7 @@ export default async function AboutPage() {
             <div className="md:sticky md:top-24">
               <figure className="relative w-full aspect-[4/5] overflow-hidden bg-cream-dark">
                 <Image
-                  src="/about.jpg"
+                  src={aboutPhoto}
                   alt="Ben Inglee"
                   fill
                   sizes="(min-width: 768px) 38vw, 100vw"
