@@ -60,20 +60,55 @@ const sections: SourceSection[] = [
     subtitle: "The City, Now Known",
     file: "Guide/Sources_List_BenInglee.docx",
   },
-  {
-    id: "reflection",
-    eyebrow: "Coda",
-    title: "Final Reflection",
-    subtitle: "On the role of sources",
-    file: "Final Reflections/Final Reflection - Sources.docx",
-  },
 ];
+
+function normalizeWhitespace(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function parseDestinationReferences(paragraphs: string[]): string[] {
+  const text = normalizeWhitespace(paragraphs.join(" "));
+  const refs: string[] = [];
+  const blockRegex =
+    /Title:\s*([\s\S]*?)\s+Author\/Org:\s*([\s\S]*?)\s+Type:\s*([\s\S]*?)\s+Date:\s*([\s\S]*?)\s+Link:\s*(https?:\/\/[^\s]+)/g;
+
+  let match: RegExpExecArray | null;
+  while ((match = blockRegex.exec(text)) !== null) {
+    const title = normalizeWhitespace(match[1]);
+    const author = normalizeWhitespace(match[2]);
+    const date = normalizeWhitespace(match[4]);
+    const url = match[5].trim();
+    refs.push(`${author}. ${title}. ${date}. ${url}`);
+  }
+
+  return refs;
+}
+
+function sanitizeReferences(sectionId: string, paragraphs: string[]): string[] {
+  if (sectionId === "destination") {
+    return parseDestinationReferences(paragraphs);
+  }
+
+  return paragraphs
+    .map((p) => normalizeWhitespace(p))
+    .filter((p) => p.length > 0)
+    .filter((p) => !/^sources:?$/i.test(p))
+    .filter((p) => !/^sources list$/i.test(p))
+    .filter((p) => !/^ben\s*inglee$/i.test(p))
+    .filter((p) => !/^msp\s*3296/i.test(p))
+    .filter((p) => !/^\w+\s+\d{1,2},?\s+\d{4}$/.test(p))
+    .filter((p) => !/^final reflection:? sources$/i.test(p))
+    .filter((p) => /^\d+\.\s+/.test(p) || /https?:\/\//.test(p));
+}
 
 export default async function SourcesPage() {
   const sectionsWithContent = await Promise.all(
     sections.map(async (section) => ({
       ...section,
-      paragraphs: await readSourcesList(section.file),
+      paragraphs: sanitizeReferences(
+        section.id,
+        await readSourcesList(section.file)
+      ),
     }))
   );
 
@@ -90,8 +125,7 @@ export default async function SourcesPage() {
         </h1>
 
         <p className="mt-5 font-serif text-lg text-ink-light italic leading-[1.7]">
-          The research, reporting, and reading that informed the essays in this
-          portfolio.
+          Reference citations only.
         </p>
 
         <hr className="decorative-rule mt-8 mb-12" />
@@ -154,6 +188,11 @@ export default async function SourcesPage() {
                   <LinkifiedText text={p} />
                 </p>
               ))}
+              {section.paragraphs.length === 0 && (
+                <p className="text-[0.95rem] text-muted">
+                  No citation entries found for this section.
+                </p>
+              )}
             </div>
           </section>
         ))}
